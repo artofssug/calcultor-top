@@ -1,0 +1,77 @@
+html, body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    height: 100%;
+    font-family: arial, sans-serif;
+}
+
+#clear, .operators, #remove {
+    color: rgb(255, 102, 0);
+}
+
+#equal, #clear, .operators, #remove {
+    color: rgb(255, 102, 0);
+    
+}
+
+#main {
+    display: flex;
+    justify-content: center;
+    min-height: 100%;
+}
+
+#equal {
+    align-self: center;
+    grid-column: 2/5;
+    margin-right: 40px;
+    background-color: rgb(255, 102, 0);
+    border-radius: 25px;
+    color: white;
+    height: 60px;
+}
+
+#display {
+    color: black;
+    font-size: 30px;
+    grid-column: 1/5;
+    justify-self: flex-end;
+    align-self: flex-end;
+    padding: 0 54px 20px 0 ;
+}
+
+button {
+    width: 20px;
+}
+
+#calculator {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 3fr 1fr 1fr 1fr 1fr 1fr;
+    padding: 20px;
+    align-self: center;
+    border-radius: 50px;
+    width: 500px;
+    height: 700px;
+    background-color: white;
+}
+
+body {
+    background-color: rgb(49, 49, 49);
+}
+
+button {
+    width: auto;
+    font-size: 30px;
+    background-color: unset;
+    border-style: none;
+}
+
+.buttonClicked {
+    background-color: rgb(230, 230, 230);
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    justify-self: center;
+    align-self: center;
+}
