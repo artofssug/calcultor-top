@@ -1,6 +1,16 @@
-//  objetivo final: criar uma calculadora
-//  essa calculadora terá as seguintes operações: +, -, * e /
-//  o display terá que mostrar num1 operator num2
+//  **** OBJETIVO FINAL: criar uma calculadora
+
+//  **** RESTRIÇÕES:
+//  terá apenas as seguintes operações: +, -, * e /
+//  calcular dois pares de números por vez
+//  deverá arredondar números que não são inteiros para uma casa decimal
+
+// **** BÔNUS:
+//  deixar bonita
+//  ter a opção de adicionar casas decimais
+//  adicionar um botão de apagar
+//  ter suporte para teclado
+ 
 
 //  VARIÁVEIS
 let display = document.querySelector('#display');
@@ -11,7 +21,7 @@ let clearBtn = document.querySelector('#clear');
 let percentBtn = document.querySelector('#percentage');
 let rmvBtn = document.querySelector('#remove');
 let decBtn = document.querySelector('#decimal');
-//  Essa variável servirá para determinar o número 2 (retiraremos tudo que veio antes do operador e, portanto, o número 2 será o que sobrar)
+//  Essa variável servirá para determinar o num2 (retiraremos tudo que veio antes do operador e, portanto, o número 2 será o que sobrar)
 let toGetNum2;
 let displayValue;
 let operator;
@@ -238,10 +248,15 @@ rmvBtn.addEventListener('click', () => {
         return
     }
     display.textContent = display.textContent.replace(/\.$|\d$/, '');
+    for (let i = 0; i < opBtn.length; i++) {
+        if (display.textContent[display.textContent.length -1] === opBtn[i].textContent) {
+            return
+        }
+    }
     displayValue = display.textContent;
-})
+});
 
-//  KEYBOARD SUPPORT
+//  SUPORTE P/ TECLADO
 window.addEventListener('keydown', (e) => {
     let code = e.key;
     if (e.key === '0') {
