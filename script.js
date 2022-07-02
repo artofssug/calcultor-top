@@ -1,19 +1,12 @@
-//  Goal: Create a calculator
-//  Step by Step
-//  Calculator needs to have:
-//  Buttons from 0 to 9 (CHECK)
-//  Operator buttons (+, -, /, *) (CHECK)
-//  More two buttons: Clear and Equal(=) (CHECK)
-//  For each of the operator button, a mathematical function (CHECK)
-//  A function that takes an operator and two numbers and then calls one of the mathematical functions
-//  Create the functions that populate the display when you click the number buttons
-
-
 // ********** QUERY SELECTORS AND VARIABLES **********
 let display = document.querySelector('#display');
 let numBtn = document.querySelectorAll('.numbers');
 let opBtn = document.querySelectorAll('.operators');
 let equalBtn = document.querySelector('#equal');
+let clearBtn = document.querySelector('#clear');
+let percentBtn = document.querySelector('#percentage');
+let rmvBtn = document.querySelector('#remove');
+let decBtn = document.querySelector('#decimal');
 let displayValue = display.textContent;
 let thereIsAlreadyAnOperator = false;
 let operator;
@@ -22,22 +15,39 @@ let num1;
 let num2;
 let finalResult;
 let lastCharacter;
+let removedText;
 
 //  For each operator button, a mathematical function (CHECK)
 function sum(num1, num2) {
     finalResult = Number(num1) + Number(num2);
+    if (!(Number.isInteger(finalResult))) {
+        finalResult = finalResult.toFixed(1);
+    }
 };
 
 function subtr(num1, num2) {
     finalResult = Number(num1) - Number(num2);
+    if (!(Number.isInteger(finalResult))) {
+        finalResult = finalResult.toFixed(1);
+    }
 };
 
 function multiply(num1, num2) {
     finalResult = Number(num1) * Number(num2);
+    if (!(Number.isInteger(finalResult))) {
+        finalResult = finalResult.toFixed(1);
+    }
 };
 
 function divide(num1, num2) {
-    finalResult = Number(num1) / Number(num2);
+    if (num1 === '0' && num2 === '0' || num2 === '0') {
+        finalResult = 'I don\'t know';
+    } else {
+        finalResult = Number(num1) / Number(num2);
+        if (!(Number.isInteger(finalResult))) {
+            finalResult = finalResult.toFixed(1);
+        }
+    }
 };
 
 //  A function that takes an operator and two numbers and then calls one of the mathematical functions based on the operator
@@ -102,7 +112,39 @@ function checkIfLastCharacterIsOp() {
     }
 }
 
-// ********** EVENT **********
+function checkIfNum2HaveAlreadyADot(tempText) {
+    for (let i = 0; i < tempText.length; i++) {
+        if (tempText[i] === decBtn.textContent) {
+            return true
+        }
+        false
+    }
+}
+
+function putNum2ADot () {
+    if (text !== undefined) {
+        for (let k = 0; k < display.textContent.length; k++) {
+            for (let l = 0; l < opBtn.length; l++) {
+                if (text[k] === opBtn[l].textContent) {
+                    let tempText = display.textContent.replace(text, '')
+                    console.log(tempText)
+                    if (tempText[k] === opBtn[l].textContent) {
+                        return
+                    } else {
+                        if (checkIfNum2HaveAlreadyADot(tempText)) {
+                            return
+                        } else {
+                            display.textContent += decBtn.textContent
+                            displayValue = display.textContent
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ********** EVENTS **********
 //  Create the functions that populate the display when you click the number buttons
 numBtn.forEach(button => {
     button.addEventListener('click', () => {
@@ -120,6 +162,9 @@ opBtn.forEach(button => {
             operator = undefined;
             num2 = undefined;
             getNum1();
+            limitTheNumOfOperators(button);
+            getOperator();
+            text = display.textContent;
             console.log(2);
         // This if will only occour to get the first number and operator in the first operation
         } else {
@@ -135,14 +180,16 @@ opBtn.forEach(button => {
 equalBtn.addEventListener('click', () => {
     // This if will only occour if the user don't provide a second number, so the result will be just the first number
     if (num1 !== undefined && operator !== undefined && (checkIfLastCharacterIsOp()) && num2 === undefined) {
-        display.textContent = num1
-        thereIsAlreadyAnOperator = false
+        display.textContent = num1;
+        thereIsAlreadyAnOperator = false;
+        text = undefined;
+        operator = undefined;
     } else if (finalResult !== undefined && num2 === undefined) {
         getNum2();
         operate(operator, num1, num2);
         operator = undefined;
         num2 = undefined;
-        console.log('xiiii')
+        console.log('xiiii');
     } else {
         lastCharacter = display.textContent[(display.textContent.length - 1)]
         if (thereIsAlreadyAnOperator === true) {
@@ -151,7 +198,54 @@ equalBtn.addEventListener('click', () => {
             getNum1();
             operator = undefined;
             num2 = undefined;
-            console.log('xix')
+            console.log('xix');
         }
     }
 });
+
+clearBtn.addEventListener('click', () => {
+    finalResult = undefined;
+    operator = undefined;
+    text = undefined;
+    num1 = undefined;
+    num2 = undefined;
+    finalResult = undefined;
+    lastCharacter = undefined;
+    thereIsAlreadyAnOperator = false;
+    display.textContent = '0'
+    displayValue = display.textContent;
+})
+
+decBtn.addEventListener('click', () => {
+    for (let j = 0; j < opBtn.length; j++) {
+        if (display.textContent[(display.textContent.length - 1)] === opBtn[j].textContent) {
+            return
+        }
+    }
+    putNum2ADot();
+    for (let i = 0; i < display.textContent.length; i++) {
+        if (display.textContent[i] === decBtn.textContent) {
+            return;
+        }
+    }
+    display.textContent += decBtn.textContent
+    displayValue = display.textContent
+    console.log(display.textContent[0])
+})
+
+rmvBtn.addEventListener('click', () => {
+    if (display.textContent === '0') {
+        return
+    } else if (display.textContent.length === 1) {
+        display.textContent = '0'
+    } else {
+        removedText = display.textContent.substring((display.textContent.length - 1), (display.textContent.length))
+        display.textContent = display.textContent.replace(removedText, '')
+        for (let i = 0; i < opBtn.length; i++) {
+            if (removedText === opBtn[i].textContent) {
+                operator = undefined
+            }
+        }
+    }
+    console.log(removedText)
+})
